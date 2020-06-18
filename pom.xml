@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.grenader.example.pcf-simple</groupId>
-    <artifactId>pcf-simple</artifactId>
+    <artifactId>encrypted-data</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>pcf-simple</name>
+    <name>encrypted-data</name>
     <description>Demo project for Spring Boot that will be deployed to PCF</description>
 
     <properties>

@@ -14,8 +14,10 @@ public class CreditCard {
     @GeneratedValue
     private Long id;
 
+    @Convert(converter = AttributeEncryptor.class)
     private String name;
 
+    @Convert(converter = AttributeEncryptor.class)
     private String number;
     private String expiration;
 

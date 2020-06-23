@@ -1,6 +1,8 @@
 package com.grenader.example.pcfsimple.server.dao;
 
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -15,13 +17,17 @@ import java.util.Base64;
 public class AttributeEncryptor implements AttributeConverter<String, String> {
 
     private static final String AES = "AES";
-    private static final String SECRET = "secret-key-12345";
 
     private final Key key;
     private final Cipher cipher;
 
-    public AttributeEncryptor() throws Exception {
-        key = new SecretKeySpec(SECRET.getBytes(), AES);
+    public AttributeEncryptor(Environment env) throws Exception {
+        // read the sercet value from configuration
+        String secret = env.getProperty("dbsecret");
+        if (StringUtils.isEmpty(secret))
+            throw new IllegalStateException("dbsecret application parameter was not configured!");
+
+        key = new SecretKeySpec(secret.getBytes(), AES);
         cipher = Cipher.getInstance(AES);
     }
 

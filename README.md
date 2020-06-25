@@ -9,12 +9,15 @@ The following API is available:
 We will use Docker to run a mySQL database.
 
 ### Create a docker container
+```
 docker run -p 3406:3306 -d --name mysql-test -e MYSQL_ROOT_PASSWORD=11 mysql/mysql-server:5.7
+```
 Note that we set mySQL password to '11', you can choose any other password.
 By default, mySQL is accessible from within the container only.
 The container will be bounded to host port 3406. 
 
 ### Enable remote access to mySQL database
+```
 docker exec -it mysql bash
 
 container> mysql -uroot -p11
@@ -29,6 +32,7 @@ mysql> GRANT ALL PRIVILEGES ON encrypted_data.* TO 'docker'@'%';
 Query OK, 0 rows affected (0.00 sec)
 
 mysql> quit
+```
 
 First, we are creating a database called 'encrypted_data'.
 Then, we added a new database usr called 'docker' with password 'password'.
@@ -49,10 +53,14 @@ Local and test profiles are configured to use a local database accessible on loc
 
 ## Use the application locally
 ### Create an executable jar with Maven:
+```
 mvn clean install
+```
 
 ### Start the application
+```
 java -jar -Dspring.profiles.active=local target/encrypted-data-0.0.1-SNAPSHOT.jar
+```
 Note, that we are specifying 'local' as a Spring Profile
 
 ### Test data encryption manually
@@ -64,6 +72,11 @@ Open the following URLs in the browser:
 Here is the sample result of the 'list' call:
 > {"id":47,"name":"TestName","number":"4121212121212","expiration":"10/22","cvv":"123"}
 
+- http://localhost:8080/data/creditcard/db/1 - fetch from DB an encrypted credit card object with id == **1**. 
+
+Here is the sample result of the 'creditcard/db' call:
+> {"id":1,"name":"yTxDAcKeP/AcS02yE+wJTuadA56MbLsOwjoLzm339Tk=","number":"VpHm5FhECJ4gpaHoFOJISGCSKB1IvY6YJ4GfhsogKck=","expiration":"U3enyhbRrSkshS7oUqVZUw==","cvv":"123"}
+
 The data will encrypted in the database. Here is how it will look like:
 ![Encrypted data](img/encrypted-table-data-sample.png?raw=true "encrypted credit_card table")
  
@@ -73,17 +86,22 @@ It is using mySQL database as a service and credhub to store.
 Try the following URLs:
 - http://reactive-pcf-service.apps.richmond.cf-app.com/data/creditcard/add?name=TestName&number=4121212121212&expiration=10/22&cvv=123 - insert a new credit card to the DB
 - http://reactive-pcf-service.apps.richmond.cf-app.com/data/creditcard/list - list all the credit card stored in the DB.
+- http://reactive-pcf-service.apps.richmond.cf-app.com/data/creditcard/db/1 - fetch from DB an encrypted credit card object with id == **1**.
 
 ## CredHub configuration
 The application deployed on PCF using a default profile.
 
 ### Create a credhub service instance:
+```
 cf create-service credhub default credhub-svc1 -c '{"dbsecret":"secret-key-90123489","name":"MY_CREDHUB_CRED","value":"ABCDEFGHIJK12345678"}'
-The service is configured with 'dbsecret' property.
+```
+The service has been configured with 'dbsecret' property.
 
 ### Link credhub service to the app:
+```
 cf bind-service reactive-pcf-service credhub-svc1
 cf restage reactive-pcf-service
+```
 
 ### Access credhub property in the application
 Please, review application.properties file content.
@@ -92,7 +110,7 @@ Please, review application.properties file content.
 A value defined on credhub will be available as 'dbsecret' application property.
 **AttributeEncryptor** class shows how to access a property.
 
-### mySQL service configuration on PCF 
+## mySQL service configuration on PCF 
 Please, review application.properties file content.
 Database configuration properties are available via VCAP properties:
 > // mySQL PCF service database configuration values, they will be filled by the platform
@@ -102,7 +120,7 @@ Database configuration properties are available via VCAP properties:
 > dbusername=${vcap.services.mysql-test1.credentials.username}
 > dbpwd=${vcap.services.mysql-test1.credentials.password}
 
-These properties are availble from 'mysql-test1' database service.
+These properties are available from 'mysql-test1' database service.
  
  
  

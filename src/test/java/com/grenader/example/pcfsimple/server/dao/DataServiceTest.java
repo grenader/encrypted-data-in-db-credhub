@@ -5,8 +5,19 @@ import com.grenader.example.pcfsimple.server.model.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.env.Environment;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.util.StringUtils;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.spec.SecretKeySpec;
+import java.security.InvalidKeyException;
+import java.security.Key;
+import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -21,9 +32,11 @@ class DataServiceTest {
     @Autowired
     private DataService dataService;
 
+    @Autowired
+    private Environment env;
+
     @Test
     void testGetPlainCreditCardData() {
-
         // Create a random card first
         final String cardholderName = "John" + System.currentTimeMillis();
         final String ccNumber = "456" + System.currentTimeMillis();
@@ -40,10 +53,8 @@ class DataServiceTest {
         assertEquals(expectedCreditCard, creditCardNative);
     }
 
-
     @Test
-    void testGetEncryptedCreditCardData() {
-
+    void testGetEncryptedCreditCardData() throws NoSuchPaddingException, NoSuchAlgorithmException {
         final CreditCard newCard = dataService.createCreditCard(Optional.of("First Name Last Name"),
                 Optional.of("4123123123123"),
                 Optional.of("09/23"), Optional.of("890"));
@@ -52,11 +63,30 @@ class DataServiceTest {
 
         System.out.println("creditCardDirectData = " + loadedCard);
 
-        assertEquals(loadedCard.getId(), newCard.getId());
-        assertEquals(loadedCard.getCvv(), newCard.getCvv());
+        assertEquals(newCard.getId(), loadedCard.getId());
+        assertEquals(newCard.getCvv(), loadedCard.getCvv());
 
         assertNotEquals(loadedCard.getName(), newCard.getName());
-        //todo: add more validation
+
+        // decrypt DB values using the same way how AttributeEncryptor works
+        assertEquals(newCard.getName(), decryptData(loadedCard.getName()));
+        assertEquals(newCard.getNumber(), decryptData(loadedCard.getNumber()));
+    }
+
+    private String decryptData(String dbData) throws NoSuchAlgorithmException, NoSuchPaddingException {
+        String secret = env.getProperty("dbsecret");
+        if (StringUtils.isEmpty(secret))
+            throw new IllegalStateException("dbsecret application parameter was not configured!");
+
+        String AES = "AES";
+        Key key = new SecretKeySpec(secret.getBytes(), AES);
+        Cipher cipher = Cipher.getInstance(AES);
+        try {
+            cipher.init(Cipher.DECRYPT_MODE, key);
+            return new String(cipher.doFinal(Base64.getDecoder().decode(dbData)));
+        } catch (InvalidKeyException | BadPaddingException | IllegalBlockSizeException e) {
+            throw new IllegalStateException(e);
+        }
     }
 
     @Test

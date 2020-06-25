@@ -35,17 +35,33 @@ public class CreditCardDataHandler {
 
     }
 
-    public Mono<ServerResponse> listCreditCard(ServerRequest serverRequest) {
+    public Mono<ServerResponse> listCreditCard(ServerRequest request) {
 
         return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON)
-                .body(Mono.<Iterable<CreditCard>>fromCallable(() -> dataService.getAllCreditCards()), Iterable.class)
+                .body(Mono.fromCallable(() -> dataService.getAllCreditCards()), Iterable.class)
                 .switchIfEmpty(ServerResponse.notFound().build());
     }
 
-    public Mono<ServerResponse> countOfCreditCard(ServerRequest serverRequest) {
+    public Mono<ServerResponse> countOfCreditCard(ServerRequest request) {
 
         return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON)
-                .body(Mono.<Long>fromCallable(() -> dataService.getCreditCardsCount()), Long.class)
+                .body(Mono.fromCallable(() -> dataService.getCreditCardsCount()), Long.class)
+                .switchIfEmpty(ServerResponse.notFound().build());
+    }
+
+    public Mono<ServerResponse> getEncryptedCreditCard(ServerRequest request) {
+
+        final String idStr = request.pathVariable("id");
+        final long id;
+        try {
+            id = Long.parseLong(idStr);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            throw new IllegalArgumentException("Id was not a number!");
+        }
+
+        return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON)
+                .body(Mono.fromCallable(() -> dataService.getEncryptedCreditCardData(id)), CreditCard.class)
                 .switchIfEmpty(ServerResponse.notFound().build());
     }
 

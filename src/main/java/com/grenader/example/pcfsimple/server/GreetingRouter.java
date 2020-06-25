@@ -36,6 +36,9 @@ public class GreetingRouter {
                 andRoute(RequestPredicates.GET("/data/creditcard/list").
                         and(RequestPredicates.accept(MediaType.TEXT_PLAIN)), creditCardDataHandler::listCreditCard).
                 andRoute(RequestPredicates.GET("/data/creditcard/count").
-                        and(RequestPredicates.accept(MediaType.TEXT_PLAIN)), creditCardDataHandler::countOfCreditCard);
+                        and(RequestPredicates.accept(MediaType.TEXT_PLAIN)), creditCardDataHandler::countOfCreditCard).
+
+                andRoute(RequestPredicates.GET("/data/creditcard/db/{id}").
+                        and(RequestPredicates.accept(MediaType.TEXT_PLAIN)), creditCardDataHandler::getEncryptedCreditCard);
     }
 }

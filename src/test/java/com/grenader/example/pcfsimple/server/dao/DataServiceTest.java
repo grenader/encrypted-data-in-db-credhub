@@ -12,6 +12,7 @@ import java.util.Optional;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsIterableContaining.hasItems;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -19,6 +20,44 @@ class DataServiceTest {
 
     @Autowired
     private DataService dataService;
+
+    @Test
+    void testGetPlainCreditCardData() {
+
+        // Create a random card first
+        final String cardholderName = "John" + System.currentTimeMillis();
+        final String ccNumber = "456" + System.currentTimeMillis();
+        final String expiry = "11/2021";
+        final String cvv = "123";
+
+        final CreditCard expectedCreditCard = dataService.createCreditCard(Optional.of(cardholderName),
+                Optional.of(ccNumber), Optional.of(expiry),
+                Optional.of(cvv));
+
+        final CreditCard creditCardNative = dataService.getCreditCardViaNativeQuery(expectedCreditCard.getId());
+
+        System.out.println("creditCardNative = " + creditCardNative);
+        assertEquals(expectedCreditCard, creditCardNative);
+    }
+
+
+    @Test
+    void testGetEncryptedCreditCardData() {
+
+        final CreditCard newCard = dataService.createCreditCard(Optional.of("First Name Last Name"),
+                Optional.of("4123123123123"),
+                Optional.of("09/23"), Optional.of("890"));
+
+        final CreditCard loadedCard = dataService.getEncryptedCreditCardData(newCard.getId());
+
+        System.out.println("creditCardDirectData = " + loadedCard);
+
+        assertEquals(loadedCard.getId(), newCard.getId());
+        assertEquals(loadedCard.getCvv(), newCard.getCvv());
+
+        assertNotEquals(loadedCard.getName(), newCard.getName());
+        //todo: add more validation
+    }
 
     @Test
     void createUser() {

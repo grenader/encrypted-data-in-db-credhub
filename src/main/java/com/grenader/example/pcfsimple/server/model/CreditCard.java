@@ -94,4 +94,15 @@ public class CreditCard {
     public int hashCode() {
         return Objects.hash(name, number, expiration, cvv);
     }
+
+    @Override
+    public String toString() {
+        return "CreditCard{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", number='" + number + '\'' +
+                ", expiration='" + expiration + '\'' +
+                ", cvv='" + cvv + '\'' +
+                '}';
+    }
 }

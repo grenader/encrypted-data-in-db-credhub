@@ -13,7 +13,8 @@ public class DataService {
 
     private final CCRepository ccRepository;
 
-    public DataService(UserRepository userRepository, CCRepository ccRepository) {
+    public DataService(UserRepository userRepository,
+                       CCRepository ccRepository) {
         this.userRepository = userRepository;
         this.ccRepository = ccRepository;
     }
@@ -34,9 +35,6 @@ public class DataService {
         return userRepository.count();
     }
 
-    public long getCreditCardsCount() {
-        return ccRepository.count();
-    }
 
     public CreditCard createCreditCard(Optional<String> cardholderName, Optional<String> ccNumber,
                                        Optional<String> expiration, Optional<String> cvv) {
@@ -51,6 +49,10 @@ public class DataService {
 
     public Iterable<CreditCard> getAllCreditCards() {
         return ccRepository.findAll();
+    }
+
+    public long getCreditCardsCount() {
+        return ccRepository.count();
     }
 
 }

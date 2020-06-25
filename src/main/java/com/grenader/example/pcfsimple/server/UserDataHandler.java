@@ -15,11 +15,11 @@ import java.util.Optional;
 
 @Component
 
-public class DataHandler {
+public class UserDataHandler {
 
     private final DataService dataService;
 
-    public DataHandler(UserRepository userRepository, DataService dataService) {
+    public UserDataHandler(UserRepository userRepository, DataService dataService) {
         this.dataService = dataService;
     }
 

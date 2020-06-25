@@ -19,6 +19,8 @@ public class CreditCard {
 
     @Convert(converter = AttributeEncryptor.class)
     private String number;
+
+    @Convert(converter = AttributeEncryptor.class)
     private String expiration;
 
     private String cvv;

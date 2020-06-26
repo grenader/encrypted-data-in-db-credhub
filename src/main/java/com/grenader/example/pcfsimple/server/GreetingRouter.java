@@ -21,9 +21,10 @@ public class GreetingRouter {
         return RouterFunctions
                 .route(RequestPredicates.GET("/hello").
                         and(RequestPredicates.accept(MediaType.TEXT_PLAIN)), greetingHandler::hello).
-                andRoute(RequestPredicates.GET("/prop").
 
+                andRoute(RequestPredicates.GET("/prop").
                         and(RequestPredicates.accept(MediaType.TEXT_PLAIN)), displayPropHandler::properties).
+
                 andRoute(RequestPredicates.GET("/data/user/add").
                         and(RequestPredicates.accept(MediaType.TEXT_PLAIN)), userDataHandler::createUser).
                 andRoute(RequestPredicates.GET("/data/user/list").

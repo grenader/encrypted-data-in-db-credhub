@@ -97,6 +97,11 @@ cf create-service credhub default credhub-svc1 -c '{"dbsecret":"secret-key-90123
 ```
 The service has been configured with 'dbsecret' property.
 
+### Modify encryption key property on credhub instance (16-bytes length):
+```
+cf update-service credhub-svc1 -c '{"dbsecret":"secret-key-67209", "name":"MY_CREDHUB_CRED","value":"ABCDEFGHIJK12345678"}'
+```
+
 ### Link credhub service to the app:
 ```
 cf bind-service reactive-pcf-service credhub-svc1

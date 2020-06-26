@@ -11,6 +11,10 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicReference;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.StringContains.containsString;
 
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles("test")
@@ -50,12 +54,23 @@ public class EncryptedDataApplicationTests {
         final String cardExpiration = "10/20";
         final String cvv = (new Random().nextInt(256) + 1) + "";
 
+        AtomicReference<Long> ccId = new AtomicReference<>();
         // Add a new credit card
-        webTestClient
-                .get().uri("/data/creditcard/add?name=" + cardHolderName + "&number=" + cardNumber +
+        webTestClient.get().uri("/data/creditcard/add?name=" + cardHolderName + "&number=" + cardNumber +
                 "&expiration=" + cardExpiration + "&cvv=" + cvv)
                 .exchange()
-                .expectStatus().isOk();
+                .expectStatus().isOk()
+                .expectBody(String.class)
+                .consumeWith(result -> {
+                    final String responseStr = result.getResponseBody();
+                    assertThat(responseStr, containsString("Hello, the credit card has been created"));
+                    assertThat(responseStr, containsString("creditCardId="));
+
+                    // reading an Id of created credit card
+                    final String[] split = responseStr.split("=");
+                    ccId.set(Long.valueOf(split[split.length - 1]));
+                });
+        System.out.println("creditCard.getId() = " + ccId.get());
 
         // find the credit card in the list
         final CreditCard expectedCard = new CreditCard(cardHolderName, cardNumber, cardExpiration, cvv);
@@ -65,11 +80,14 @@ public class EncryptedDataApplicationTests {
                 .expectStatus().isOk()
                 .expectBodyList(CreditCard.class).contains(expectedCard);
 
-        //Load encrypted data:
-        //todo: add more validation
-
-        System.out.println("expectedCard = " + expectedCard);
+        //Load encrypted credit card data
+        webTestClient
+                .get().uri(("/data/creditcard/db/" + ccId.get()))
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody()
+                // validate only non-encrypted fields.
+                .jsonPath("$.id").isEqualTo(ccId.get())
+                .jsonPath("$.cvv").isEqualTo(cvv);
     }
-
-
 }

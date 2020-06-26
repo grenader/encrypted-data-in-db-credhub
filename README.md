@@ -127,6 +127,32 @@ Database configuration properties are available via VCAP properties:
 
 These properties are available from 'mysql-test1' database service.
  
+# References
+- How to use credhub service in java
+https://engineering.pivotal.io/post/spring-boot-injecting-credentials/
  
+- Building a Reactive RESTful Web Service
+https://spring.io/guides/gs/reactive-rest-service/
+ 
+- Using mySQL. Next step:
+https://spring.io/guides/gs/accessing-data-mysql/
+ 
+- DATABASE COLUMN-LEVEL ENCRYPTION WITH SPRING DATA JPA
+https://sultanov.dev/blog/database-column-level-encryption-with-spring-data-jpa/
+
+- And one more with tests:
+https://www.baeldung.com/jpa-attribute-converters
+ 
+- Bind a DB to a service:
+https://docs.cloudfoundry.org/devguide/services/managing-services.html
+ 
+- mySQLBrowser:
+https://github.com/pivotal-cf/PivotalMySQLWeb
+ 
+- Get Service Keys:
+https://stackoverflow.com/questions/54284031/how-do-i-connect-to-my-mysql-service-on-pivotal-cloud-foundry-pcf-via-mysql-wo
+ 
+ 
+
  
  

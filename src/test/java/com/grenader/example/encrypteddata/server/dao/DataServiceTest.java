@@ -1,7 +1,7 @@
-package com.grenader.example.pcfsimple.server.dao;
+package com.grenader.example.encrypteddata.server.dao;
 
-import com.grenader.example.pcfsimple.server.model.CreditCard;
-import com.grenader.example.pcfsimple.server.model.User;
+import com.grenader.example.encrypteddata.server.model.CreditCard;
+import com.grenader.example.encrypteddata.server.model.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

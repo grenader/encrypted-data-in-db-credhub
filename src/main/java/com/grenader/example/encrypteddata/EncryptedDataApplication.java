@@ -1,4 +1,4 @@
-package com.grenader.example.pcfsimple;
+package com.grenader.example.encrypteddata;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

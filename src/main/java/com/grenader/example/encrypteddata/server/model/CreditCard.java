@@ -1,6 +1,6 @@
-package com.grenader.example.pcfsimple.server.model;
+package com.grenader.example.encrypteddata.server.model;
 
-import com.grenader.example.pcfsimple.server.dao.AttributeEncryptor;
+import com.grenader.example.encrypteddata.server.dao.AttributeEncryptor;
 
 import javax.persistence.Convert;
 import javax.persistence.Entity;

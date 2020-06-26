@@ -1,4 +1,4 @@
-package com.grenader.example.pcfsimple.server.model;
+package com.grenader.example.encrypteddata.server.model;
 
 
 import javax.persistence.Entity;

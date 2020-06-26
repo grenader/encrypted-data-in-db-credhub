@@ -84,9 +84,9 @@ The data will encrypted in the database. Here is how it will look like:
 This application is also deployed on PCF.
 It is using mySQL database as a service and credhub to store.
 Try the following URLs:
-- http://reactive-pcf-service.apps.richmond.cf-app.com/data/creditcard/add?name=TestName&number=4121212121212&expiration=10/22&cvv=123 - insert a new credit card to the DB
-- http://reactive-pcf-service.apps.richmond.cf-app.com/data/creditcard/list - list all the credit card stored in the DB.
-- http://reactive-pcf-service.apps.richmond.cf-app.com/data/creditcard/db/1 - fetch from DB an encrypted credit card object with id == **1**.
+- http://encrypted-mysql-data.apps.richmond.cf-app.com/data/creditcard/add?name=TestName&number=4121212121212&expiration=10/22&cvv=123 - insert a new credit card to the DB
+- http://encrypted-mysql-data.apps.richmond.cf-app.com/data/creditcard/list - list all the credit card stored in the DB.
+- http://encrypted-mysql-data.apps.richmond.cf-app.com/data/creditcard/db/1 - fetch from DB an encrypted credit card object with id == **1**.
 
 ## CredHub configuration
 The application deployed on PCF using a default profile.
@@ -104,8 +104,8 @@ cf update-service credhub-svc1 -c '{"dbsecret":"secret-key-67209", "name":"MY_CR
 
 ### Link credhub service to the app:
 ```
-cf bind-service reactive-pcf-service credhub-svc1
-cf restage reactive-pcf-service
+cf bind-service encrypted-mysql-data credhub-svc1
+cf restage encrypted-mysql-data
 ```
 
 ### Access credhub property in the application

@@ -1,9 +1,9 @@
-package com.grenader.example.pcfsimple.server;
+package com.grenader.example.encrypteddata.server;
 
 
-import com.grenader.example.pcfsimple.server.dao.DataService;
-import com.grenader.example.pcfsimple.server.dao.UserRepository;
-import com.grenader.example.pcfsimple.server.model.User;
+import com.grenader.example.encrypteddata.server.dao.DataService;
+import com.grenader.example.encrypteddata.server.dao.UserRepository;
+import com.grenader.example.encrypteddata.server.model.User;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.BodyInserters;

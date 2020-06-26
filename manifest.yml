@@ -1,6 +1,6 @@
 ---
 applications:
-  - name: reactive-pcf-service
+  - name: encrypted-mysql-data
     path: ./target/encrypted-data-0.0.1-SNAPSHOT.jar
     memory: 1G
     instances: 1

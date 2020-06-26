@@ -1,4 +1,4 @@
-package com.grenader.example.pcfsimple.server.dao;
+package com.grenader.example.encrypteddata.server.dao;
 
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;

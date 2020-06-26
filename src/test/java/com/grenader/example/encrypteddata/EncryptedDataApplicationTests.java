@@ -1,7 +1,7 @@
-package com.grenader.example.pcfsimple;
+package com.grenader.example.encrypteddata;
 
-import com.grenader.example.pcfsimple.server.model.CreditCard;
-import com.grenader.example.pcfsimple.server.model.User;
+import com.grenader.example.encrypteddata.server.model.CreditCard;
+import com.grenader.example.encrypteddata.server.model.User;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;

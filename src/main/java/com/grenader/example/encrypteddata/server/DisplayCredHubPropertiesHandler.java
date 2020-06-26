@@ -1,4 +1,4 @@
-package com.grenader.example.pcfsimple.server;
+package com.grenader.example.encrypteddata.server;
 
 
 import org.springframework.beans.factory.annotation.Value;
